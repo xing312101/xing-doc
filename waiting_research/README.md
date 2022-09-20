@@ -91,13 +91,6 @@
 
 ## 待分類/整理內容
 ```
-eval $(ssh-agent -s)
-
-ssh-add ~/.ssh/id_rsa
-
-echo "Host *\n StrictHostKeyChecking no\n UserKnownHostsFile /dev/null\n ForwardAgent yes$(cat ~/.ssh/config)" > ~/.ssh/config
-echo -e "Host * \n\tStrictHostKeyChecking no\n\tUserKnownHostsFile /dev/null" >> ~/.ssh/config
-
 https://niallburkley.com/blog/ruby-publish-subscribe/
 https://techblog.thescore.com/2014/05/28/how-you-nest-modules-matters-in-ruby/
 https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/

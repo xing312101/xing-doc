@@ -171,6 +171,7 @@
    * [Ad Robot](web_server/ad_robot.md)
    * [Nginx](web_server/nginx.md)
    * [DDNS](web_server/ddns.md)
+* [SSH](ssh/README.md)
 * [weather data system](weather_data_system/README.md)
 * [PHP](php/README.md)
 * [Swift](swift/README.md)
