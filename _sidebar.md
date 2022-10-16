@@ -74,6 +74,7 @@
 * [AWS](aws/README.md)
    * [S3](aws/s3.md)
 * [Ruby on Rails](ruby_on_rails/README.md)
+   * [To Know Rails](ruby_on_rails/to_know_rails.md)
    * [RVM](ruby_on_rails/rvm.md)
    * [rbenv](ruby_on_rails/rbenv.md)
    * [SQL Query](ruby_on_rails/sql_query.md)

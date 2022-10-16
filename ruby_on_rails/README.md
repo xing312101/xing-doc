@@ -28,6 +28,9 @@ gem install someGemName
 
 不安裝文件的參數
 --no-rdoc and --no-ri
+
+default:
+echo 'gem: --no-document' >> ~/.gemrc
 ```
 
 ### rails
