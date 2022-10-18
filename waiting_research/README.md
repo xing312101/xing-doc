@@ -6,7 +6,6 @@
 
 ## Frontend JS
 
-* angular 4, 5
 * vue.js
 * react
 * Redux(depend react)
@@ -18,9 +17,6 @@
 
 ### about app:
 * https://www.icicletech.com/blog/4-easy-ways-to-integrate-reactjs-with-ruby-on-rails
-
-## docker
-
 
 ## image
 * http://troygram.com
@@ -44,9 +40,6 @@
 ## Rails
 * https://draveness.me/rack-unicorn
 > 關於各個web server在rails上
-
-## typescriptlang
-* https://www.typescriptlang.org/docs/home.html
 
 ## single page
 * https://github.com/lord/slate
@@ -107,10 +100,6 @@ https://www.itread01.com/content/1550615418.html
 https://www.books.com.tw/products/0010795044?gclid=CjwKCAjw7-P1BRA2EiwAXoPWAxUT3kipm9CS9SsHBAWjvpvBtcaI1GeUyf9vHVqTpTAFWVYU7HIwihoCzrQQAvD_BwE
 
 ```
-
-# Polymer Project
-> https://www.polymer-project.org/
-
 
 # machine learning
 > https://github.com/OlafenwaMoses/ImageAI
