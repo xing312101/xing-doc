@@ -107,4 +107,9 @@ https://www.twilio.com/docs/verify/api/verification
 > https://medium.com/%E7%94%A8%E5%8A%9B%E5%8E%BB%E6%84%9B%E4%B8%80%E5%80%8B%E4%BA%BA%E7%9A%84%E8%A9%B1-%E5%BF%83%E4%B9%9F%E6%9C%83%E7%97%9B%E7%9A%84/dp/home
 
 
+## Queue機制
+Sidekiq/SQS
+
+## 快取系統
+redis / Elastic
 
