@@ -99,8 +99,12 @@ https://blog.gtwang.org/iot/raspberry-pi-microsd-card-setup-in-windows/
 https://www.itread01.com/content/1550615418.html
 https://www.books.com.tw/products/0010795044?gclid=CjwKCAjw7-P1BRA2EiwAXoPWAxUT3kipm9CS9SsHBAWjvpvBtcaI1GeUyf9vHVqTpTAFWVYU7HIwihoCzrQQAvD_BwE
 
+sms:
+https://www.twilio.com/docs/verify/api/verification
 ```
 
 # machine learning
 > https://medium.com/%E7%94%A8%E5%8A%9B%E5%8E%BB%E6%84%9B%E4%B8%80%E5%80%8B%E4%BA%BA%E7%9A%84%E8%A9%B1-%E5%BF%83%E4%B9%9F%E6%9C%83%E7%97%9B%E7%9A%84/dp/home
+
+
 

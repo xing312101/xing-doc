@@ -31,3 +31,17 @@ ssh-add ~/.ssh/id_rsa
 echo "Host *\n StrictHostKeyChecking no\n UserKnownHostsFile /dev/null\n ForwardAgent yes$(cat ~/.ssh/config)" > ~/.ssh/config
 echo -e "Host * \n\tStrictHostKeyChecking no\n\tUserKnownHostsFile /dev/null" >> ~/.ssh/config
 ```
+
+
+## pem key
+
+```
+ssh -i keyName.pem user@host
+```
+
+####public issue
+vim  ~/.ssh/config
+```
+Host *
+    PubkeyAcceptedKeyTypes +ssh-rsa
+```
