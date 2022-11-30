@@ -45,3 +45,13 @@ vim  ~/.ssh/config
 Host *
     PubkeyAcceptedKeyTypes +ssh-rsa
 ```
+
+## Too many authentication failures
+```
+1.
+ssh -o IdentitiesOnly=yes user@localhost
+
+2. ~/.ssh/config
+Host *
+  IdentitiesOnly=yes
+```

@@ -8,6 +8,12 @@
 > http://api.rubyonrails.org/
 
 
+## convention over configuration
+最重要的觀念：慣例優於設定
+
+### const_missing, method_missing
+黑魔法
+
 ## install rails
 > 要先有ruby環境，可以先建置RVM的設定
 
@@ -87,3 +93,14 @@ bundle exec rake assets:precompile
 
 ## change master key
 > https://medium.com/cedarcode/rails-5-2-credentials-9b3324851336
+
+
+## quickly develop gem in rails
+```
+in Rails Gemfile
+gem 'gemName', :path => "GemProject"
+
+# must uninstall the gem and rm gem file in the gems.
+
+$ bundle exec rackup server...
+```

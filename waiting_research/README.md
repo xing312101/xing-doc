@@ -41,6 +41,9 @@
 * https://draveness.me/rack-unicorn
 > 關於各個web server在rails上
 
+* https://www.urbanautomaton.com/blog/2020/11/04/rails-autoloading-heaven/
+
+
 ## single page
 * https://github.com/lord/slate
 

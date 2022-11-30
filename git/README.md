@@ -65,6 +65,17 @@ method 2. new git
 3. git init
 ```
 
+## local user
+```
+## only apply in the repository
+$ git config user.name "Your Name Here"
+$ git config user.email your@email.example
+
+## global
+$ git config --global user.name "Your Name Here"
+$ git config --global user.email your@email.example
+```
+
 ## Commands
 ```
 ### git clone

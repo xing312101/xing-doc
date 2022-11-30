@@ -91,7 +91,7 @@ run proc{
 ```
 
 
-## 5. Add application in x_rails
+## 5. Using application in x_rails
 
 at module XRails in x_rails
 ```
@@ -169,7 +169,7 @@ new a controller at app/controllers that same as rails
 
 tasks_controller.rb
 ```
-class TasksController < XRails::controller
+class TasksController < XRails::Controller
   def index
     "Hello, there are tasks."
   end
@@ -182,3 +182,97 @@ for auto reload file when refresh page
 ```
 $LOAD_PATH << File.join(File.dirname(__FILE__), "..", "app", "controllers")
 ```
+
+
+## 7. Favicon and Homepage
+#### x_rails
+```
+class Application
+    def call(env)
+      return favicon if '/favicon.ico' == env["PATH_INFO"]
+      return index if '/' == env["PATH_INFO"]
+
+      begin
+        # get controller name and action name
+        klass, action =  get_controller_and_action(env)
+        controller = klass.new(env)
+        text = controller.send(action)
+
+        [200,
+          {'content-type' => 'text/html'},
+          [text]
+        ]
+      rescue
+        [404, {'content-type' => 'text/html'},
+        ['This is a 404 page!!']]
+      end
+    end
+
+    private
+
+    def index
+      begin
+        home_klass = Object.const_get('HelloController')
+        controller = home_klass.new(env)
+        text = controller.send(:index)
+        [200, {'content-type' => 'text/html'}, [text]]
+      rescue NameError
+        [200, {'content-type' => 'text/html'}, ['This is a index page']]
+      end
+    end
+
+    def favicon
+      return [404, {'content-type' => 'text/html'}, []]
+    end
+  end
+```
+#### x_ror
+add a HelloController
+add require 'hello_controller'
+
+## 8. autoload contorller
+
+### $LOAD_PATH
+It means that the library is there.
+
+### $LOADED_FEATURES
+It records the required library.
+
+### const_missing
+using const_missing to find which file need auto loading
+
+at lib/x_rails/support.rb
+```
+class Object
+  def self.const_missing(const)
+    require XRails.to_underscore(const.to_s)
+    Object.const_get(const)
+  end
+end
+```
+
+at lib/x_rails/dependencies.rb
+```
+class Object
+  def self.const_missing(const)
+    require XRails.to_underscore(const.to_s)
+    FinalObject.const_get(const)
+  end
+end
+
+class FinalObject < Object
+  # avoid to unlimit loop
+  def self.const_missing(const)
+    nil
+  end
+end
+```
+
+in lib/x_rails.rb
+```
+require "x_rails/support"
+require "x_rails/dependencies"
+```
+
+remove the request controller at x_ror/config
+
