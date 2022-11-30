@@ -276,3 +276,68 @@ require "x_rails/dependencies"
 
 remove the request controller at x_ror/config
 
+
+## View
+
+### erubi
+rails 5 ~ ... are using erubi not erb
+```
+## x_rails/x_rails.gemspec
+
+spec.add_runtime_dependency "erubi"
+```
+
+```
+gem 'erubi'
+```
+
+### controller class
+create a controller.rb in lib/x_rails/
+
+in lib/x_rails.rb
+```
+require "x_rails/controller"
+
+remove the class controller code.
+```
+
+#### add render method and controller_name in controller.rb
+```
+def render(view_name)
+    # project/app/views/{{controller_name}}/{{view_name}}.html.erb
+    # the path as a convention
+    filename = File.join "app", "views", controller_name, "#{view_name}.html.erb"
+    viewTemplate = File.read filename
+    eval(Erubi::Engine.new(viewTemplate).src)
+end
+
+def controller_name
+    klass = self.class
+    klass = klass.to_s.gsub /Controller$/, ""
+    XRails.to_underscore klass
+end
+```
+
+#### apply the view in x_ror
+in TasksController
+```
+def index
+    @message = "Hello YuXing, how about the view?"
+    render('index')
+end
+```
+
+create a view file: index.html.erb
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Index</title>
+  </head>
+  <body>
+    <h1>task index page</h1>
+    <%= @message %>
+  </body>
+</html>
+```
