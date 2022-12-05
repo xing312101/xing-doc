@@ -104,3 +104,27 @@ gem 'gemName', :path => "GemProject"
 
 $ bundle exec rackup server...
 ```
+
+## vscode extension
+> https://dev.to/thomasvanholder/10-vs-code-extensions-for-ruby-on-rails-developers-89a
+
+```
+* Ruby
+Ruby
+Ruby Solargraph
+Endwise
+ERB Helper tags
+Rails DB Schema
+Rubocop
+ERB Formatter
+Emmet in ERB
+
+* General
+Atom Dark Theme
+VSCode-icons
+DotENV
+Output Colorizer
+Auto Rename Tag
+Highlight Matching Tag
+Bracket Pair Colorizer 2
+```

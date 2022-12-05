@@ -341,3 +341,48 @@ create a view file: index.html.erb
   </body>
 </html>
 ```
+
+### helper
+> ... 應該有更好的位置，目前先放controller
+
+```
+def link_to(name = nil, url = nil)
+  "<a href=\"#{url}\">#{name}</a>"
+end
+```
+
+### layout
+先將原本的render的結果放到一個class的attribute
+再做一個另一個像render的layout即可完成
+
+at controller.rb in x_rails
+```
+attr_reader :content
+
+def layout_render()
+  filename = File.join("app", "views", "layouts", "application.html.erb")
+  template = File.read(filename)
+  eval(Erubi::Engine.new(template).src)
+end
+
+def content
+  @content
+end
+```
+
+layout file in x_ror
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Index</title>
+  </head>
+  <body>
+    <div>
+      Hello this is application layout.
+    </div>
+    <%= @content %>
+  </body>
+</html>
+```
