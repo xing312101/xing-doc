@@ -277,7 +277,7 @@ require "x_rails/dependencies"
 remove the request controller at x_ror/config
 
 
-## View
+## 9. View
 
 ### erubi
 rails 5 ~ ... are using erubi not erb
@@ -386,3 +386,224 @@ layout file in x_ror
   </body>
 </html>
 ```
+
+## 10. Model
+
+### multi_json
+> as db data
+```
+## x_rails/x_rails.gemspec
+
+spec.add_runtime_dependency "multi_json"
+```
+
+### file_model
+an like ActiveModel
+```
+## x_rails/lib/x_rails/file_model.rb
+
+require "multi_json"
+
+module XRails
+  module Model
+    class FileModel
+      def initialize(file)
+        @file = file
+        basename = File.split(file)[-1]
+        @id = File.basename(basename, ".json").to_i
+
+        obj = File.read(file)
+        @hash = MultiJson.load(obj)
+      end
+
+      def [](name)
+        @hash[name.to_s]
+      end
+
+      def []=(name, value)
+        @hash[name.to_s] = value
+      end
+
+      def self.find(id)
+        begin
+         FileModel.new("db/tasks/#{id}.json")
+        rescue
+         return nil
+        end
+      end
+    end
+  end
+end
+```
+
+at x_rails/lib/x_rails.rb
+```
+require_relative "x_rails/file_model"
+```
+
+### Using in x_ror
+
+#### create a db json
+db/tasks/1.json
+```
+{
+  "title": "第一個Task",
+  "content": "吃喝拉撒睡"
+}
+
+```
+
+#### def show method in tasks_controller
+```
+@task = Mavericks::Model::FileModel.find(1)
+```
+
+#### show.html.erb
+```
+<div style="padding: 20px; background: red;">
+  <div style="padding: 5px; background: green;">
+    <%= @task["title"] %>
+  </div>
+  <div style="padding: 5px; background: yellow;">
+    <%= @task["content"] %>
+  </div>
+</div>
+```
+
+### model all data
+
+#### def all in file_model
+```
+def self.all
+  files = Dir['db/tasks/*.json']
+  files.map { |f| FileModel.new f}
+end
+```
+
+#### index.html.erb
+```
+<h1>任務的index</h1>
+<%= @message %>
+<%= link_to("task detail", "https://www.google.com/") %>
+
+<% @tasks.each do |task| %>
+  <div style="padding: 5px; background: red;">
+    <div style="padding: 5px; background: green;">
+      <%= task["title"] %>
+    </div>
+    <div style="padding: 5px; background: yellow;">
+      <%= task["content"] %>
+    </div>
+  </div>
+<% end %>
+```
+
+### model create record
+#### def create in model
+```
+def self.create(attr)
+  hash = {}
+  hash[:title] = attr[:title]
+  hash[:content] = attr[:content]
+
+  # find max id
+  id =  Dir['/Users/yuxinglee/xing/x_ror/db/tasks/*'].max[/\d+/]
+
+  id = id ? id.to_i + 1 : 1
+
+  File.open("db/tasks/#{id}.json", "w") do |f|
+    f.write <<-TEMPLATE
+      {
+        "title": "#{hash[:title]}",
+        "content": "#{hash[:content]}"
+      }
+    TEMPLATE
+  end
+
+    FileModel.new "db/tasks/#{id}.json"
+end
+```
+
+#### def create in action
+```
+def create
+  attrs = {
+    title: 'Hello',
+    content: 'Create a new record'
+  }
+
+  XRails::Model::FileModel.create(attrs)
+  @tasks = XRails::Model::FileModel.all
+  render 'index'
+end
+```
+
+
+## 11. request
+
+### x_rails controller handle "request"
+```
+def request
+  @request || @request = Rack::Request.new(@env)
+end
+
+def params
+  request.params
+end
+```
+
+### Try params in show
+```
+def show
+  @task = FileModel.find(params['id'])
+end
+```
+
+## 12. response
+
+#### x_rails controller handle "response"
+```
+def response(text, status = 200, headers = {})
+  raise "Already responded!" if @response
+  @response = Rack::Response.new(text, status, headers)
+end
+
+def get_response
+  @response
+end
+```
+
+#### Modify the response
+remove isRendered
+```
+def call(env)
+  return favicon if '/favicon.ico' == env["PATH_INFO"]
+  return index(env) if '/' == env["PATH_INFO"]
+
+  begin
+    # get controller name and action name
+    klass, action = get_controller_and_action(env)
+    controller = klass.new(env)
+
+    controller.send(action)
+    default_render(controller, action) unless controller.content
+
+    # layout
+    controller.layout_render
+
+    if controller.get_response
+      controller.get_response.to_a
+    else
+      [500, {'Content-Type' => 'text/html'},
+        ['server error!!']]
+    end
+  rescue => e
+    puts e.message
+    puts e.backtrace
+    [404, {'content-type' => 'text/html'},
+    ['This is a 404 page!!']]
+  end
+end
+```
+
+## 13. ??
