@@ -71,6 +71,32 @@ sudo pip3 install w1thermsensor;
 ```
 
 
+## Repository 'http://raspbian.raspberrypi.org/raspbian buster InRelease' changed its 'Suite' value from 'stable' to 'oldstable'
+```
+sudo apt update
+
+sudo apt full-upgrade // 可以不用
+```
 
 
+## mysql => mariadb-server
+```
+sudo apt-cache search mysql // 找不到mysql
 
+sudo apt-get install mariadb-server-10.3 // 改用這個
+
+sudo mysql // 可以用mysql command
+```
+
+### 設定
+```
+use mysql;
+UPDATE user SET password=password('123456') WHERE user='root';
+UPDATE user SET plugin='mysql_native_password' WHERE user = 'root';
+FLUSH PRIVILEGES;
+exit
+```
+然後重開
+```
+sudo systemctl restart mariadb
+```

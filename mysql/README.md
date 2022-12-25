@@ -66,3 +66,53 @@ sudo /usr/local/mysql/support-files/mysql.server start
 sudo /usr/local/mysql/support-files/mysql.server stop
 sudo /usr/local/mysql/support-files/mysql.server restart
 ```
+
+## mysql_secure_installation
+```
+mysql_secure_installation
+```
+
+## User
+
+### check allowed user access from
+```
+select user,host from mysql.user;
+```
+
+### create
+```
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'PASSWORD'
+GRANT ALL PRIVILEGES ON database_name.* TO 'user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+### authorization
+```
+SHOW GRANTS FOR user_name@localhost;
+GRANT ALL ON * . * TO 'user_name'@'localhost';
+GRANT ALL PRIVILEGES ON 'test'.* TO 'user_name'@'localhost';
+```
+
+## port
+>> ref: http://blog.itist.tw/2015/02/raspberry-pi-install-mysql-or-mariadb.html
+```
+sudo iptables -A INPUT -p TCP -i eth0 --dport 3306 --sport 1024:65534 -j ACCEPT
+```
+
+## Enable remote for MariaDB
+>> https://webdock.io/en/docs/how-guides/database-guides/how-enable-remote-access-your-mariadbmysql-database
+
+check service and port status
+```
+ps -ef | grep -i mysql
+netstat -ant | grep 3306
+```
+
+```
+vim /etc/mysql/my.cnf
+[mysqld]
+bind-address = 0.0.0.0
+
+
+sudo systemctl restart mariadb
+```
