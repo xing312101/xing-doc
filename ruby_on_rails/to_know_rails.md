@@ -606,4 +606,279 @@ def call(env)
 end
 ```
 
-## 13. ??
+## 13. Migration
+
+### Using SQLite
+```
+## x_rails/x_rails.gemspec
+spec.add_runtime_dependency 'sqlite3'
+```
+
+### create a migration_file
+#### migration_20221206.rb in x_ror
+```
+require 'sqlite3'
+
+conn = SQLite3::Database.new "x_ror.db"
+
+conn.execute <<SQL
+create table tasks(
+id INTEGER PRIMARY KEY,
+title TEXT,
+content TEXT);
+SQL
+```
+
+RUN: $ bundle exec ruby hello_x_ror.rb
+
+
+### SQLite model
+x_rails/lib/x_rails/sqlite_model.rb
+```
+require 'SQLite3'
+
+DB = SQLite3::Database.new 'x_ror.db'
+
+module XRails
+  module Model
+    class SQLite
+      def self.table
+        table_name = XRails.to_underscore name
+        XRails.to_plural table_name
+      end
+
+      def self.schema
+        return @schema if @schema
+        @schema = {}
+
+        DB.table_info(table) do |row|
+          @schema[row["name"]] = row["type"]
+        end
+        @schema
+      end
+
+    end
+  end
+end
+```
+
+##### to_plural
+```
+def self.to_plural(string)
+  pattern = /.*s$|x$|z$|sh$|ch$/
+  pattern.match?(string) ? "#{string}es" : "#{string}s"
+end
+```
+
+#### get table schema
+```
+require 'x_rails/sqlite_model'
+require 'x_rails/support'
+
+class Task < XRails::Model::SQLite
+end
+
+puts Task.schema
+```
+
+## 14. ORM
+### Create
+
+```
+class SQLite
+  def initialize(data = nil)
+    @hash = data
+  end
+
+  def self.to_safe_sql_string(val)
+    case val
+    when Numeric
+      val.to_s
+    when String
+      "'#{val}'"
+    else
+      raise "Can't support #{val.class} to SQL!"
+    end
+  end
+
+  def self.table
+    table_name = XRails.to_underscore name
+    XRails.to_plural table_name
+  end
+
+  def self.schema
+    return @schema if @schema
+    @schema = {}
+
+    DB.table_info(table) do |row|
+      @schema[row["name"]] = row["type"]
+    end
+    @schema
+  end
+
+  def self.create(values)
+    values.delete :id
+    keys = schema.keys - ['id']
+    vals = keys.map do |key|
+      values[key.to_sym] ? to_safe_sql_string(values[key.to_sym]) : "null"
+    end
+
+    DB.execute <<-SQL
+      INSERT INTO #{table} (#{keys.join ","})
+      VALUES (#{vals.join ","});
+    SQL
+
+    data = Hash[keys.zip values.values]
+    sql = "SELECT last_insert_rowid();"
+    data["id"] = DB.execute(sql)[0][0]
+    self.new data
+  end
+
+  def self.count
+    DB.execute(<<-SQL)[0][0]
+      SELECT COUNT(*) FROM #{table}
+    SQL
+  end
+end
+```
+
+### find & all
+```
+def self.find(id)
+  row = DB.execute <<-SQL
+    select #{schema.keys.join ","} from #{table}
+    where id = #{id};
+  SQL
+
+  data = Hash[schema.keys.zip row[0]]
+  self.new data
+end
+
+def self.all
+  row = DB.execute <<-SQL
+    select #{schema.keys.join ","} from #{table}
+  SQL
+
+  row.map do |attr|
+    data = Hash[schema.keys.zip attr]
+    self.new data
+  end
+end
+```
+
+### get & set
+```
+def [](name)
+  @hash[name.to_s]
+end
+
+def []=(name, value)
+  @hash[name.to_s] = value
+end
+```
+
+### save & save!
+```
+def save!
+  unless @hash["id"]
+    self.class.create(@hash)
+    return true
+  end
+
+  fields = @hash.map { |key, value| "#{key}=#{self.class.to_safe_sql_string(value)}" }.join ","
+
+  DB.execute <<-SQL
+    UPDATE #{self.class.table}
+    SET #{fields}
+    WHERE id = #{@hash["id"]}
+  SQL
+
+  true
+end
+
+def save
+  self.save! rescue false
+end
+```
+
+### delete
+```
+def delete
+  unless @hash["id"]
+    return true
+  end
+
+  DB.execute <<-SQL
+    DELETE FROM #{self.class.table}
+    WHERE id = #{@hash["id"]}
+  SQL
+
+  true
+end
+```
+
+#### try script
+```
+require 'x_rails/sqlite_model'
+require 'x_rails/support'
+
+class Task < XRails::Model::SQLite
+
+end
+
+puts Task.schema
+
+Task.create('title': 'Task', 'content': 'Smile')
+
+puts Task.count
+
+Task.all.each { |task| puts "#{task['title']} : #{task['content']}"  }
+
+puts Task.find(1)['content']
+
+Task.all.each { |task| task.delete }
+```
+
+## 15. attr_accessor
+
+```
+def method_missing(attr, *args)
+  attrs = self.class.schema
+  attr = attr.to_s.gsub('=', '')
+  if attrs.key?(attr)
+    self.class.define_attr(attrs)
+    val = args.empty? ?  self.send(attr) : self.send("#{attr}=", args[0])
+    return val
+  else
+    super
+  end
+end
+
+def self.define_attr(attrs)
+  attrs.keys.each do |attr|
+    add_method_to_get(attr)
+    add_method_to_set(attr)
+  end
+end
+
+def self.add_method_to_get(attr)
+  define_method attr do
+    self[attr.to_s]
+  end
+end
+
+def self.add_method_to_set(attr)
+  define_method "#{attr}=" do |arg|
+    self[attr.to_s] = arg
+  end
+end
+```
+
+## 16. powerful ORM
+> using postgresql as db
+
+
+
+
+
+
