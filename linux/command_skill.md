@@ -49,4 +49,7 @@ mount -o remount,rw /block_name
 
 ## killall
 
-
+## scp multiple file
+```
+scp -T user@hostname:"one.filePath two.filePath" copyToPath
+```

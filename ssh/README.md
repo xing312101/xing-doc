@@ -55,3 +55,53 @@ ssh -o IdentitiesOnly=yes user@localhost
 Host *
   IdentitiesOnly=yes
 ```
+
+
+## add key in authorized_keys for ssh login
+```
+mkdir authorized_keys in ~/.ssh
+```
+
+
+## ssh socket
+### using ssh/config
+```
+Host 10.10.10.115
+  ControlMaster auto
+  ControlPath path # like /.ssh/xxx_control or /tmp/serverNameControl
+  ControlPersist 2h
+```
+
+### using SSH_SOCKET
+> not success, need to check
+#### set socket path
+```
+ENV_VARIABLE=socketPath
+ex: ENV_VARIABLE=~/.ssh/user@hostName
+```
+
+#### use the sshsocket
+1. create master connection
+```
+ssh -M -f -N -o ControlPath=$ENV_VARIABLE myUsername@targetServerName
+```
+
+2. use
+```
+ssh -o ControlPath=$ENV_VARIABLE user@hostName "echo 'Hello Xing'; ls"
+
+scp -o ControlPath=$ENV_VARIABLE user@hostName:remoteFile.txt ./
+```
+
+#### close the sshsocket
+```
+ssh -S $ENV_VARIABLE -O exit user@hostName
+```
+
+## auto load ssh key
+```
+Host *
+  UseKeychain yes
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/[your-secure-ssh-key-name]
+```
