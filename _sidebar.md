@@ -183,6 +183,7 @@
 * [Windows](windows/README.md)
    * [Commands](windows/commands.md)
 * [Mac](mac/README.md)
+   * [Visual Studio Code](mac/vscode.md)
 * [development tools](development_tools/README.md)
 * [Bootstrap](bootstrap/README.md)
 * [Go Lang](go_lang/README.md)
