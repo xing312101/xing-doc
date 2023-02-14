@@ -198,6 +198,7 @@
    * [setting](maximo/setting.md)
    * [coding](maximo/coding.md)
    * [loading icon](maximo/loading_icon.md)
+   * [Birt](maximo/birt.md)
 * [Words](words/README.md)
 * [Machine Learning](machine_learning/README.md)
 * [Echarts Apache](echarts_apache/README.md)

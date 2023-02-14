@@ -141,13 +141,13 @@ buildTypes {
     debug {
         signingConfig signingConfigs.debug
         minifyEnabled false
-        useProguard true
+        // useProguard true // replaced by android.enableR8=true at gradle.properties
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
 
     release {
         signingConfig signingConfigs.release
-        useProguard true
+        // useProguard true // replaced by android.enableR8=true at gradle.properties
         shrinkResources true
         minifyEnabled true
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -155,7 +155,10 @@ buildTypes {
 }
 ```
 
-
+### Do not use BuildContexts across async gaps.
+```
+if (!mounted) return;
+```
 
 
 
