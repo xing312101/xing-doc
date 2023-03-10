@@ -28,3 +28,8 @@ row["hello"] = VehicleStatisticsSet.getString("world");
 
 return (true);
 ```
+
+## console log
+```
+Packages.java.lang.System.out.println ("this.queryText: " + this.queryText);
+```
