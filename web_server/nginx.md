@@ -90,3 +90,16 @@ location /sockjs-node {
     proxy_set_header Connection "upgrade";
 }
 ```
+
+## 反向代理
+```
+# 反向代理到同一台主機的 3000 Port
+# TODO: $host$request_uri
+proxy_pass http://localhost:3000;
+
+
+# 把 IP、Protocol 等 header 都一起送給反向代理的 server
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+```
