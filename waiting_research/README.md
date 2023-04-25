@@ -122,3 +122,10 @@ https://docusaurus.io/
 
 ## Swagger
 api document
+
+## [Flutter]カメラのフレームデータを使ってリアルタイム画像認識
+https://re-engines.com/2022/09/11/flutter%E3%82%AB%E3%83%A1%E3%83%A9%E3%81%AE%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%83%AA%E3%82%A2%E3%83%AB%E3%82%BF%E3%82%A4%E3%83%A0/
+
+## [Flutter] 用相機畫面一小部分做辨識
+https://medium.com/flutter-taipei/flutter-%E5%B0%87%E7%9B%B8%E6%A9%9F%E7%95%AB%E9%9D%A2%E4%B8%80%E5%B0%8F%E9%83%A8%E5%88%86%E5%81%9A%E8%BE%A8%E8%AD%98-8247e9372c52
+
