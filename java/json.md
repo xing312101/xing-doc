@@ -28,3 +28,13 @@ if (!dataObj.isNull("key")) {
   dateParser.parse(tString);
 }
 ```
+
+## datetime
+```
+/// import java.sql.ResultSet;
+/// import java.sql.SQLException;
+
+    Timestamp timestamp = resultSet.getTimestamp(i);
+if (timestamp != null)
+    date = new java.util.Date(timestamp.getTime()));
+```

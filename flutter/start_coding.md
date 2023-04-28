@@ -155,6 +155,18 @@ class _HelloState extend State<Hello> {
 ## Drawer
 UserAccountsDrawerHeader
 
+#### to listen Drawer event
+```
+Scaffold(
+    onDrawerChanged: (isOpened) {
+    //todo what you need for left drawer
+    },
+    onEndDrawerChanged: (isOpened) {
+    //todo what you need for right drawer
+    },
+)
+```
+
 
 ## Take a picture using the camera
 > https://flutter.dev/docs/cookbook/plugins/picture-using-camera
